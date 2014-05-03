@@ -1,0 +1,24 @@
+{
+    "name": "application-name",
+    "version": "0.0.1",
+    "author": {
+        "name": "Konstantin Isaev",
+        "email": "konstantin.isaev@sakartvelosoft.com",
+        "url": "https://www.sakartvelosoft.com"
+    },
+    "repository": {
+        "type":"git",
+        "url":"git://github.com/sakartvelosoft/api-tools.git"
+    },
+    "description":"Enables support for dynamic includes for Jade",
+    "keywords" : ["web","api","factory","utilities","helpers"],
+    "dependencies":{
+        "express":">=4.1.0",
+        "Q" : "*"
+    },
+    "main":"index",
+    "homepage":"https://github.com/sakartvelosoft.com/api-tools",
+
+    "engines" : {
+        "node":">=0.10.2"
+    }}
