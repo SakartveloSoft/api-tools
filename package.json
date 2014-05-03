@@ -1,6 +1,6 @@
 {
     "name": "api-tools",
-    "version": "0.0.4",
+    "version": "0.0.7",
     "author": {
         "name": "Konstantin Isaev",
         "email": "konstantin.isaev@sakartvelosoft.com",
@@ -14,7 +14,7 @@
     "keywords" : ["web","api","factory","utilities","helpers"],
     "dependencies":{
         "express":">=4.1.0",
-        "Q" : "*"
+        "Q" : "2.0.*"
     },
     "main":"index",
     "homepage":"https://github.com/sakartvelosoft.com/api-tools",
