@@ -25,7 +25,8 @@ Global securing can be made with the following call:
     var safeApp = apiTools.secureApplication(app, isLoggedIn);
 
 where
-* ___safeApp is the wrapper with VERB and __safe__Verb methods,
+
+*  ___safeApp___ is the wrapper with VERB and __safe__Verb methods,
 * ___app___ is your express application,
 * ___isLoggedIn___ is your securityMiddleware.
 
@@ -38,10 +39,12 @@ API descriptor and conventions
 ==============================
 
 The following properties are expected by registerAPI method:
-* __name__ - the name, that becomes pat of route.
+
+* __baseUri__ - optional base url if your API. default value is ``/api/``
+* __name__ - the name, that becomes part of route to actions of API descriptor is about.
 Base route route is built using template:
 
-        /api/[name]
+        /{baseUri}/[name]
 
 * __secure__ - if this value is present and considered by JavaScript as ___true___, the safe routes are registered
 using __safe__VERB methods. otherwise unsafe methods will be used - get, post, put, patch, options.
@@ -158,6 +161,41 @@ will be mapped to PATCH_setTaskParent method, and parameters wil get parameters 
 
 will be mapped to DELETE method, expecting the _taskId_ route parameter as _integer_ value, that will be
 assigned to **route_taskId_i** parameter.
+
+Custom values parsers and custom values sources
+===============================================
+Using the registerTypeParser method you can improve values reading and parsing by providing special callback mapped
+to a type specifier.
+Value readers
+-------------
+Value reader is a function, that reads raw value from a source and send it to value parser with context data.
+Value reader MUST have the following signature:
+
+        function(name, parser, req)
+
+The order of arguments are so because the library applies binding to `name` and `parser` arguments.
+
+The default reader for query string values is shown below:
+
+    function readQueryStringParameter(name, parser, req) {
+        var q =  getParsedFullUrl(req);
+        if (q.query) {
+            return parser(q.query[name], req, name);
+        }
+        else {
+            return undefined;
+        }
+    }
+
+Value parsers
+-------------
+Value parser ensures that parsed value has the desired type, e. g. it parses the date literal and returns Date object.
+Value parser MUST have the following signature:
+
+        function(value, req, name)
+
+If your value parser does not need the `parser` and `req` by providing.
+
 
 
 Provided context
