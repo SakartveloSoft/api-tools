@@ -194,7 +194,11 @@ Value parser MUST have the following signature:
 
         function(value, req, name)
 
-If your value parser does not need the `parser` and `req` by providing.
+If your value parser does not need the `parser` and `req` by consuming only the first parameter with signature likr this:
+
+        function(value)
+
+Value, returned by parser, becomes the argument value in he call of API function being mapped to the route.
 
 
 
