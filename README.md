@@ -164,8 +164,8 @@ assigned to **route_taskId_i** parameter.
 
 Custom values parsers and custom values sources
 ===============================================
-Using the registerTypeParser method you can improve values reading and parsing by providing special callback mapped
-to a type specifier.
+Using the API listed below you can improve values reading and parsing by providing special callback mapped
+to a type specifier suffix or value source prefix.
 Value readers
 -------------
 Value reader is a function, that reads raw value from a source and send it to value parser with context data.
@@ -186,6 +186,17 @@ The default reader for query string values is shown below:
             return undefined;
         }
     }
+    
+use the `registerValuesReader` function to register own value reader:
+
+        apiTools.registerValuesReader('prefix_literal', function(name, parser, req) {
+        });
+        
+If you need map multiple prefixes to your reader callback, use the following multi-prefix form of call:
+
+        apiTools.registerValuesReader(['prefix_literal', 'pref_lit'], function(name, parser, req) {
+        });
+
 
 Value parsers
 -------------
@@ -194,11 +205,29 @@ Value parser MUST have the following signature:
 
         function(value, req, name)
 
-If your value parser does not need the `parser` and `req` by consuming only the first parameter with signature likr this:
+If your value parser does not need the `name` and `req` by consuming only the first parameter with signature like this:
 
         function(value)
 
-Value, returned by parser, becomes the argument value in he call of API function being mapped to the route.
+Value, returned by parser, becomes the argument value in the call of your API function being mapped to the route.
+
+Value parsers are registered by calllng the `registerTypeParser` function like so
+
+        apiTools.registerTypeParser('suffix_literal', function(value, name, req) {
+        });
+
+or for multiple suffixes like so:
+
+         apiTools.registerTypeParser(]'suffix_literal', 'sfx'], function(value, name, req) {
+         });
+
+Predefined readers and parsers replacement
+------------------------------------------
+While you can replace default value readers and value parsers, you should care about the fact that library 
+use some of them in a special way. E. g. default value reader for route parameters, when bound to a function parameter, 
+affects the resulting route literal (prefixes `route` and `param` adds `:{param_naee}` construct to the route while the
+`path` prefix adds the `*{param_name}` construct ot the route. The `body` prefix des not affect route.
+
 
 
 
@@ -229,7 +258,8 @@ Known limitations
 =================
 
 Currently API generated with this library returns only what the method `req.send` of Express library can return,
-without own content negotiation. So, assume that only JSON can be returned.
+without own content negotiation. So, assume that only JSON can be returned, unless you set properly headers and made 
+other setup theExpress needs.
 
 
 
